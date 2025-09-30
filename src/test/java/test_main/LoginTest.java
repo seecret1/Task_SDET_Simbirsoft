@@ -13,8 +13,7 @@ public class LoginTest extends BaseSeleniumTest {
         loginPage.login(
                 ConfigProvider.ADMIN_NAME,
                 ConfigProvider.ADMIN_PASS,
-                ConfigProvider.ADMIN_EMAIL,
-                "message"
+                ConfigProvider.ADMIN_EMAIL
         );
     }
 }

@@ -1,5 +1,6 @@
 package test_main;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.Select;
 import test_settings.BaseSeleniumPage;
 import org.openqa.selenium.WebElement;
@@ -46,6 +47,9 @@ public class LoginPage extends BaseSeleniumPage {
     @FindBy(id = "submit-btn")
     private WebElement submitBtn;
 
+    @FindBy(xpath = "//label[text()='Automation tools']/following-sibling::ul")
+    private WebElement automationToolsList;
+
     private WebDriverWait wait;
     private JavascriptExecutor js;
 
@@ -56,7 +60,7 @@ public class LoginPage extends BaseSeleniumPage {
         js = (JavascriptExecutor) driver;
     }
 
-    public LoginPage login(String name, String pass, String email, String message) {
+    public LoginPage login(String name, String pass, String email) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         JavascriptExecutor js = (JavascriptExecutor) driver;
 
@@ -72,7 +76,9 @@ public class LoginPage extends BaseSeleniumPage {
         dropdown.selectByIndex(3);
 
         inputEmail.sendKeys(email);
-        inputMessage.sendKeys(message);
+
+        String longestTool = new ItemAutomationTools().getItemAutomationTools();
+        inputMessage.sendKeys(longestTool);
 
         js.executeScript("arguments[0].click();", submitBtn);
 
@@ -83,24 +89,33 @@ public class LoginPage extends BaseSeleniumPage {
         public String getItemAutomationTools() {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-            wait.until(ExpectedConditions.visibilityOf());
+            wait.until(ExpectedConditions.visibilityOf(automationToolsList));
 
-            Select dropdown = new Select();
+            List<WebElement> options = automationToolsList.findElements(By.tagName("li"));
 
-            List<WebElement> options = dropdown.getOptions();
+            System.out.println("Найдено options: " + options.size());
+            for (WebElement option : options) {
+                System.out.println("Option text: '" + option.getText() + "'");
+            }
+
+            if (options.isEmpty()) {
+                return "No options found";
+            }
 
             int max = 0;
+            WebElement longestOption = null;
+
             for (WebElement option : options) {
-                if (max < option.getText().length())
-                    max = option.getText().length();
-            }
-            for (WebElement option : options) {
-                if (option.getText().length() == max) {
-                    return option.getText();
+                String text = option.getText().trim();
+                if (!text.isEmpty() && max < text.length()) {
+                    max = text.length();
+                    longestOption = option;
                 }
             }
 
-            return null;
+            String result = longestOption != null ? longestOption.getText().trim() : "No suitable option";
+            System.out.println("Выбранный текст: " + result);
+            return result;
         }
     }
 }
