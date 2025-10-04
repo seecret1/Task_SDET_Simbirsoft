@@ -1,8 +1,6 @@
 package test_main;
 
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import test_settings.BaseSeleniumTest;
 import test_settings.ConfigProvider;
 import test_settings.EmailValidator;
@@ -11,8 +9,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class LoginTest extends BaseSeleniumTest {
-
-    private final Logger log = LoggerFactory.getLogger(LoginTest.class);
 
     @Test
     public void testLoginPositive() {

@@ -2,8 +2,6 @@ package test_main;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.Select;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import test_settings.BaseSeleniumPage;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
