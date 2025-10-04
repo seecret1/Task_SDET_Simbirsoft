@@ -15,5 +15,11 @@ public interface ConfigProvider {
     String ADMIN_PASS = readConfig().getString("userParams.admin.password");
     String ADMIN_EMAIL = readConfig().getString("userParams.admin.login");
 
-    String DEMO_PASS = readConfig().getString("userParams.demo.password");
+    String PAVEL_NAME = readConfig().getString("userParams.pavel.name");
+    String PAVEL_PASS = readConfig().getString("userParams.pavel.password");
+    String PAVEL_EMAIL = readConfig().getString("userParams.pavel.login");
+
+    String MAX_NAME = readConfig().getString("userParams.max.name");
+    String MAX_PASS = readConfig().getString("userParams.max.password");
+    String MAX_EMAIL = readConfig().getString("userParams.max.login");
 }
