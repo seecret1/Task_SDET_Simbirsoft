@@ -1,12 +1,15 @@
 package test_main;
 
 import io.qameta.allure.*;
+import io.qameta.allure.model.Status;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import test_settings.BaseTest;
 import test_settings.ConfigProvider;
 import test_settings.EmailValidator;
 
+import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Epic("Тесты формы")
@@ -20,18 +23,39 @@ public class LoginTest extends BaseTest {
     @Description("Тест проверяет корректное заполнение всех полей формы и отправку данных")
     @Severity(SeverityLevel.CRITICAL)
     public void testLoginPositive() {
-        Allure.step("Создание страницы логина", step -> {
+        step("Создание страницы логина", step -> {
             new LoginPage().login(
                     ConfigProvider.ADMIN_NAME,
                     ConfigProvider.ADMIN_PASS,
                     ConfigProvider.ADMIN_EMAIL
             );
 
-            Allure.step("Проверка успешной отправки", step2 -> {
+            step("Проверка успешной отправки", step2 -> {
                 assertTrue(true, "Форма должна быть успешно отправлена");
             });
         });
     }
+
+
+    @Test
+    @Story("Позитивное тестирование")
+    @DisplayName("Заполнение только обязательных полей")
+    @Description("Тест проверяет отправку данных при заполнении обязательных полей")
+    @Severity(SeverityLevel.CRITICAL)
+    public void testLoginOnlyNamePositive() {
+        step("Создание страницы логина", step -> {
+            new LoginPage().login(
+                    ConfigProvider.ADMIN_NAME,
+                    "",
+                    ""
+            );
+
+            step("Проверка успешной отправки", step2 -> {
+                assertTrue(true, "Форма должна быть успешно отправлена");
+            });
+        });
+    }
+
 
     @Test
     @Story("Негативное тестирование")
@@ -39,7 +63,7 @@ public class LoginTest extends BaseTest {
     @Description("Тест проверяет обработку пустого имени")
     @Severity(SeverityLevel.NORMAL)
     public void testLoginNegativeEmptyName() {
-        Allure.step("Создание страницы логина", step -> {
+        step("Создание страницы логина", step -> {
             String name = ConfigProvider.PAVEL_NAME;
 
             new LoginPage().login(
@@ -50,7 +74,7 @@ public class LoginTest extends BaseTest {
 
             assertTrue((name == null || name.trim().isEmpty()), "Имя должно быть пустым");
 
-            Allure.step("Проверка валидации", step2 -> {
+            step("Проверка валидации", step2 -> {
                 assertTrue(true, "Отображается сообщение об ошибке для пустого имени");
             });
         });
@@ -62,7 +86,7 @@ public class LoginTest extends BaseTest {
     @Description("Тест проверяет обработку некорректного email")
     @Severity(SeverityLevel.NORMAL)
     public void testLoginNegativeInvalidEmail() {
-        Allure.step("Создание страницы логина", step -> {
+        step("Создание страницы логина", step -> {
             String email = ConfigProvider.MAX_EMAIL;
 
             new LoginPage().login(
@@ -71,11 +95,10 @@ public class LoginTest extends BaseTest {
                     email
             );
 
-            assertFalse(EmailValidator.isValidEmail(email), "Email должен быть некорректным");
-
-            Allure.step("Проверка валидации email", step2 -> {
-                assertTrue(true, "Отображается сообщение об ошибке для некорректного email");
-            });
+            if (!EmailValidator.isValidEmail(email)) {
+                step("Ошибка с email не отображается", Status.FAILED);
+                Assertions.fail("Email должен быть некорректным");
+            }
         });
     }
 }

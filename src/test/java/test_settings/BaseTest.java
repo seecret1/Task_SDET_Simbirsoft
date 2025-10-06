@@ -30,7 +30,6 @@ abstract public class BaseTest {
         options.addArguments("--start-maximized");
         options.setPageLoadStrategy(PageLoadStrategy.EAGER);
 
-        WebDriver driver = new ChromeDriver(options);
         driver = new ChromeDriver(options);
 
         driver.manage().window().maximize();
