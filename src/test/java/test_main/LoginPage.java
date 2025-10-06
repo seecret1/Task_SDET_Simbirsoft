@@ -1,8 +1,9 @@
 package test_main;
 
+import io.qameta.allure.Allure;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.Select;
-import test_settings.BaseSeleniumPage;
+import test_settings.BasePage;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -14,7 +15,7 @@ import test_settings.ConfigProvider;
 import java.time.Duration;
 import java.util.List;
 
-public class LoginPage extends BaseSeleniumPage {
+public class LoginPage extends BasePage {
 
     @FindBy(id = "name-input")
     private WebElement inputName;
@@ -61,37 +62,47 @@ public class LoginPage extends BaseSeleniumPage {
         wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         JavascriptExecutor js = (JavascriptExecutor) driver;
 
-        System.out.println("Enter name");
         inputName.sendKeys(name);
+        System.out.println("Enter name");
+        Allure.step("Enter name");
 
-        System.out.println("Enter password");
         inputPass.sendKeys(pass);
+        System.out.println("Enter password");
+        Allure.step("Enter password");
 
-        System.out.println("Click checkBoxMilk");
         js.executeScript("arguments[0].click();", checkBoxMilk);
+        System.out.println("Click checkBoxMilk");
+        Allure.step("Click checkBoxMilk");
 
-        System.out.println("Click checkBoxCoffee");
         js.executeScript("arguments[0].click();", checkBoxCoffee);
+        System.out.println("Click checkBoxCoffee");
+        Allure.step("Click checkBoxCoffee");
 
-        System.out.println("Click radioButtonYellow");
         js.executeScript("arguments[0].click();", radioBtnYellow);
+        System.out.println("Click radioButtonYellow");
+        Allure.step("Click radioButtonYellow");
 
-        System.out.println("Click selectItem");
         wait.until(ExpectedConditions.visibilityOf(selectItem));
         Select dropdown = new Select(selectItem);
+        System.out.println("Click selectItem");
+        Allure.step("Click selectItem");
 
-        System.out.println("Select dropdown");
         dropdown.selectByIndex(3);
+        System.out.println("Click selectItemValue");
+        Allure.step("Click selectItemValue");
 
-        System.out.println("Enter email");
         inputEmail.sendKeys(email);
+        System.out.println("Enter email");
+        Allure.step("Enter email");
 
-        System.out.println("Enter message");
         String longestTool = getItemAutomationTools();
         inputMessage.sendKeys(longestTool);
+        System.out.println("Enter message");
+        Allure.step("Enter message");
 
-        System.out.println("Click submitBtn");
         js.executeScript("arguments[0].click();", submitBtn);
+        System.out.println("Click submitBtn");
+        Allure.step("Click submitBtn");
         return this;
     }
 
